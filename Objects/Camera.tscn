@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://l1d22y2l5fhj"]
+
+[ext_resource type="Script" path="res://Scripts/Camera.gd" id="1_ddn5b"]
+
+[node name="Player" type="Node3D"]
+script = ExtResource("1_ddn5b")
+speed_multiplier = 1.0
+
+[node name="Camera3D" type="Camera3D" parent="."]
+current = true

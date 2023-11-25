@@ -1,0 +1,41 @@
+[gd_scene load_steps=11 format=3 uid="uid://c44756i3ufu1o"]
+
+[ext_resource type="Script" path="res://Scripts/Root.gd" id="1_cnxf0"]
+[ext_resource type="Texture2D" uid="uid://c80v8ogfsvse2" path="res://Materials/skybox.jpg" id="2_d5awm"]
+[ext_resource type="Shader" path="res://Shaders/hex_tiling.gdshader" id="3_f2dfe"]
+[ext_resource type="Texture2D" uid="uid://c71rmllweypbn" path="res://Materials/grass.jpg" id="4_x4pp8"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_kqxqb"]
+panorama = ExtResource("2_d5awm")
+
+[sub_resource type="Sky" id="Sky_7qsbs"]
+sky_material = SubResource("PanoramaSkyMaterial_kqxqb")
+
+[sub_resource type="Environment" id="Environment_e7f1a"]
+background_mode = 2
+sky = SubResource("Sky_7qsbs")
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_ovjkn"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fljgi"]
+render_priority = 0
+shader = ExtResource("3_f2dfe")
+shader_parameter/IN_UV_SCALE = 20.0
+shader_parameter/IN_ROTATION = 0.0
+shader_parameter/IN_TOGGLE_HEX_TILING = false
+shader_parameter/IN_TOGGLE_WEIGHTS = true
+shader_parameter/IN_TEXTURE = ExtResource("4_x4pp8")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_yncyq"]
+material = SubResource("ShaderMaterial_fljgi")
+size = Vector2(200, 200)
+
+[node name="Root" type="Node3D"]
+script = ExtResource("1_cnxf0")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_e7f1a")
+camera_attributes = SubResource("CameraAttributesPractical_ovjkn")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_yncyq")
