@@ -2,6 +2,7 @@ shader_type spatial;
 
 uniform sampler2D IN_TEXTURE;
 uniform float     IN_ROTATION;
+uniform float     IN_SCALE_MULTIPLIER;
 uniform bool      IN_TOGGLE_HEX_TILING;
 uniform bool      IN_TOGGLE_WEIGHTS;
 
@@ -154,7 +155,7 @@ void normal_sampling(
 void fragment() {
 	vec4 color;
 	vec3 weights;
-	vec2 uniform_scaled_uv = UV * vec2( MODEL_MATRIX[0].x, MODEL_MATRIX[1].y );
+	vec2 uniform_scaled_uv = UV * vec2( MODEL_MATRIX[0].x, MODEL_MATRIX[1].y ) / IN_SCALE_MULTIPLIER;
 
 	if( IN_TOGGLE_HEX_TILING )
 		texture_2_color( IN_TEXTURE, uniform_scaled_uv, IN_ROTATION, 0.5, color, weights );
