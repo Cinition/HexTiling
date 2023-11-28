@@ -1,12 +1,9 @@
 shader_type spatial;
 
 uniform sampler2D IN_TEXTURE;
-uniform float     IN_UV_SCALE;
-
-// Hex-tiling parameterers
-uniform float IN_ROTATION;
-uniform bool  IN_TOGGLE_HEX_TILING;
-uniform bool  IN_TOGGLE_WEIGHTS;
+uniform float     IN_ROTATION;
+uniform bool      IN_TOGGLE_HEX_TILING;
+uniform bool      IN_TOGGLE_WEIGHTS;
 
 void triangle_grid( 
 	vec2 sampling_coord,
@@ -103,7 +100,7 @@ void texture_2_color(
 {
 	float fall_off_constrast = 0.6;
 	float exponent = 7.0;
-	
+
 	vec2 point_derivative_x = dFdx( sampling_coord );
 	vec2 point_derivative_y = dFdy( sampling_coord );
 
@@ -136,10 +133,10 @@ void texture_2_color(
 	Dw.x = mix( 1.0, Dw.x, fall_off_constrast );
 	Dw.y = mix( 1.0, Dw.y, fall_off_constrast );
 	Dw.z = mix( 1.0, Dw.z, fall_off_constrast );
-	
+
 	vec3 W = Dw * pow( vec3( w1, w2, w3 ), vec3( exponent ) );
 	W /= ( W.x + W.y + W.z );
-	
+
 	if( mix_contrast != 0.5 )
 		W = gain3( W, mix_contrast );
 	
@@ -147,12 +144,24 @@ void texture_2_color(
 	weights = produce_hex_weights( W.xyz, vertex1, vertex2, vertex3 );
 }
 
+void normal_sampling( 
+	in sampler2D sampled_texture, in vec2 sampling_coord,
+	out vec4 color )
+{
+	color = texture( sampled_texture, sampling_coord );
+}
+
 void fragment() {
 	vec4 color;
 	vec3 weights;
-	texture_2_color( IN_TEXTURE, UV * IN_UV_SCALE, 0.0, 0.5, color, weights );
+	vec2 uniform_scaled_uv = UV * vec2( MODEL_MATRIX[0].x, MODEL_MATRIX[1].y );
 
-	if( IN_TOGGLE_WEIGHTS )
+	if( IN_TOGGLE_HEX_TILING )
+		texture_2_color( IN_TEXTURE, uniform_scaled_uv, IN_ROTATION, 0.5, color, weights );
+	else
+		normal_sampling( IN_TEXTURE, uniform_scaled_uv, color );
+
+	if( IN_TOGGLE_WEIGHTS && IN_TOGGLE_HEX_TILING )
 	{
 		ALBEDO.r = weights.r;
 		ALBEDO.g = weights.g;

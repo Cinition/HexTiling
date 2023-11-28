@@ -20,15 +20,14 @@ sky = SubResource("Sky_7qsbs")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_fljgi"]
 render_priority = 0
 shader = ExtResource("3_f2dfe")
-shader_parameter/IN_UV_SCALE = 20.0
-shader_parameter/IN_ROTATION = 0.0
-shader_parameter/IN_TOGGLE_HEX_TILING = false
-shader_parameter/IN_TOGGLE_WEIGHTS = true
+shader_parameter/IN_ROTATION = 30.0
+shader_parameter/IN_TOGGLE_HEX_TILING = true
+shader_parameter/IN_TOGGLE_WEIGHTS = false
 shader_parameter/IN_TEXTURE = ExtResource("4_x4pp8")
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_yncyq"]
 material = SubResource("ShaderMaterial_fljgi")
-size = Vector2(200, 200)
+size = Vector2(10, 10)
 
 [node name="Root" type="Node3D"]
 script = ExtResource("1_cnxf0")
@@ -38,4 +37,5 @@ environment = SubResource("Environment_e7f1a")
 camera_attributes = SubResource("CameraAttributesPractical_ovjkn")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 0, 0, 0)
 mesh = SubResource("PlaneMesh_yncyq")
