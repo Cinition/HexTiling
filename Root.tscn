@@ -1,9 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://c44756i3ufu1o"]
+[gd_scene load_steps=12 format=3 uid="uid://c44756i3ufu1o"]
 
 [ext_resource type="Script" path="res://Scripts/Root.gd" id="1_cnxf0"]
 [ext_resource type="Texture2D" uid="uid://c80v8ogfsvse2" path="res://Materials/skybox.jpg" id="2_d5awm"]
 [ext_resource type="Shader" path="res://Shaders/hex_tiling.gdshader" id="3_f2dfe"]
 [ext_resource type="Texture2D" uid="uid://c71rmllweypbn" path="res://Materials/grass.jpg" id="4_x4pp8"]
+[ext_resource type="Script" path="res://HexTiling.gd" id="5_m4kup"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_kqxqb"]
 panorama = ExtResource("2_d5awm")
@@ -14,21 +15,24 @@ sky_material = SubResource("PanoramaSkyMaterial_kqxqb")
 [sub_resource type="Environment" id="Environment_e7f1a"]
 background_mode = 2
 sky = SubResource("Sky_7qsbs")
+ambient_light_source = 1
 
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_ovjkn"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_fljgi"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_71vpo"]
 render_priority = 0
 shader = ExtResource("3_f2dfe")
-shader_parameter/IN_ROTATION = 0.0
+shader_parameter/IN_ROTATION = 1.045
+shader_parameter/IN_CONSTRAINT = 0.353
 shader_parameter/IN_SCALE_MULTIPLIER = 1.0
-shader_parameter/IN_TOGGLE_HEX_TILING = false
-shader_parameter/IN_TOGGLE_WEIGHTS = false
+shader_parameter/IN_TOGGLE_HEX_TILING = true
+shader_parameter/IN_TOGGLE_WEIGHTS = true
 shader_parameter/IN_TEXTURE = ExtResource("4_x4pp8")
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_yncyq"]
-material = SubResource("ShaderMaterial_fljgi")
-size = Vector2(10, 10)
+material = SubResource("ShaderMaterial_71vpo")
+uv2_padding = 0.0
+size = Vector2(20, 20)
 
 [node name="Root" type="Node3D"]
 script = ExtResource("1_cnxf0")
@@ -38,5 +42,20 @@ environment = SubResource("Environment_e7f1a")
 camera_attributes = SubResource("CameraAttributesPractical_ovjkn")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 0, 0, 0)
 mesh = SubResource("PlaneMesh_yncyq")
+script = ExtResource("5_m4kup")
+hex_shader = SubResource("ShaderMaterial_71vpo")
+texture = ExtResource("4_x4pp8")
+toggle_hex_sampling = true
+toggle_hex_weights = true
+contraint = 0.353
+rotation_offset = 1.045
+scale_multiplier = 1.0
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.71828, 0.442124, -0.537215, 0, 0.772134, 0.63546, 0.695754, -0.456438, 0.554608, 0.606625, 2.83731, -0.971535)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.72727, -0.514317, 0.454485, -2.98023e-08, 0.662176, 0.749349, -0.686352, -0.544979, 0.48158, 0, 0, 0)
+light_color = Color(0.721569, 0.909804, 1, 1)
+sky_mode = 1

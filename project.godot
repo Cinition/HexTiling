@@ -11,5 +11,21 @@ config_version=5
 [application]
 
 config/name="Hex Tiling"
-config/features=PackedStringArray("4.1", "Forward Plus")
+run/main_scene="res://Root.tscn"
+config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.svg"
+
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/size/initial_position_type=0
+window/size/always_on_top=true
+
+[editor]
+
+movie_writer/movie_file="E:/MainFolder/Projects/HexTiling/Demos/Demo.avi"
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
